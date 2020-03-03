@@ -10,9 +10,10 @@ from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import create_menu
 import Modulation_package as mod
+from PIL import Image, ImageTk
 
 main_window=tk.Tk(className='Device Simulator')
-
+main_window.resizable(False,False)
 create_menu.create_menu_bar(main_window)
 
 def plot_resistor():
@@ -79,11 +80,26 @@ def plot_frequency_modulation():
 def Plot_Phase_Modulation():
     mod.Plot_Phase_Modulation()
 
-plot_detail=LabelFrame(main_window,width=350,highlightcolor='pink',highlightbackground='pink',bd=10,bg='Aqua').grid(row=0,column=0,padx=20,pady=10)
-Label(plot_detail,text='Choose Any One to Plot Graph',fg='Black',font='Didot').grid(row=0,column=0)
-button1=tk.Button(plot_detail,bg='LightSlateGray',command=plot_resistor,font='Courier',activebackground='blue',activeforeground='red',text='resistor',width=20,height=2).grid(row=1,column=0,padx=5,pady=5)
-button2=tk.Button(plot_detail,bg='LightSlateGray',command=plot_modulation,font='courier',activebackground='blue',activeforeground='red',text='Amplitude Modulation',width=20,height=2).grid(row=2,column=0,padx=5,pady=5)
-button3=tk.Button(plot_detail,bg='LightSlateGray',command=plot_frequency_modulation,font='courier',activebackground='blue',activeforeground='red',text='Frequency Modulation',width=20,height=2).grid(row=3,column=0,padx=5,pady=5)
-button4=tk.Button(plot_detail,bg='LightSlateGray',command=Plot_Phase_Modulation,font='courier',activebackground='blue',activeforeground='red',text='Phase Modulation',width=20,height=2).grid(row=4,column=0,padx=5,pady=5)
+
+image = Image.open("C:/Users/DELL/Pictures/iitbhu_log.png")
+photo = ImageTk.PhotoImage(image)
+create_menu.icon_background(main_window,photo)
+
+#buttom=tk.Button(main_window,image=photo).grid(row=0,column=0)
+
+plot_detail=tk.LabelFrame(main_window,text='Modulation',font='Didot',width=450,highlightcolor='pink',highlightbackground='pink',bd=10,bg='Aqua')
+plot_detail.grid(row=0,column=0,padx=20,pady=10)
+Label(plot_detail,text='Choose Any One to Plot Graph',bg='Aqua',fg='RED',font='Didot').grid(row=0,column=0,pady=10,padx=10)
+#button1=tk.Button(plot_detail,bg='LightSlateGray',command=plot_resistor,font='Courier',activebackground='blue',activeforeground='red',text='resistor',width=20,height=2).grid(row=1,column=0,padx=5,pady=5)
+button1=tk.Button(plot_detail,bg='LightSlateGray',command=plot_modulation,font='courier',activebackground='blue',activeforeground='red',text='Amplitude Modulation',width=20,height=2).grid(row=1,column=0,padx=5,pady=5)
+button2=tk.Button(plot_detail,bg='LightSlateGray',command=plot_frequency_modulation,font='courier',activebackground='blue',activeforeground='red',text='Frequency Modulation',width=20,height=2).grid(row=2,column=0,padx=5,pady=5)
+button3=tk.Button(plot_detail,bg='LightSlateGray',command=Plot_Phase_Modulation,font='courier',activebackground='blue',activeforeground='red',text='Phase Modulation',width=20,height=2).grid(row=3,column=0,padx=5,pady=5)
+
+plot_device=tk.LabelFrame(main_window,text='Solid State Device',font='Didot',width=350,highlightcolor='pink',highlightbackground='pink',bd=10,bg='Aqua')
+plot_device.grid(row=0,column=1,padx=20,pady=10)
+Label(plot_device,text='Choose Any One to Plot characetristics',bg='Aqua',fg='RED',font='Didot').grid(row=0,column=0,padx=10,pady=10)
+button1=tk.Button(plot_device,bg='LightSlateGray',command=plot_resistor,font='Courier',activebackground='blue',activeforeground='red',text='Resistor',width=20,height=2).grid(row=1,column=0,padx=5,pady=5)
+button2=tk.Button(plot_device,bg='LightSlateGray',command=plot_resistor,font='Courier',activebackground='blue',activeforeground='red',text='Diode',width=20,height=2).grid(row=2,column=0,padx=5,pady=5)
+button3=tk.Button(plot_device,bg='LightSlateGray',command=plot_resistor,font='Courier',activebackground='blue',activeforeground='red',text='Transistor',width=20,height=2).grid(row=3,column=0,padx=5,pady=5)
 
 main_window.mainloop()
