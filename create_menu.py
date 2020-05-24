@@ -2,13 +2,15 @@ from tkinter import *
 from tkinter import messagebox as msg
 from tkinter import filedialog as fd
 import tkinter as tk
-from PIL import Image,ImageTk
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import prac
+import sqlite3
+#from PIL import Image,ImageTk
+#from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 
 def icon_background(wind,photo):
 
-    wind.iconphoto(True, photo)
+    #wind.iconphoto(True, photo)
     wind.configure(background='AntiqueWhite1')
 
 def _create_check(modulation_window):
@@ -70,7 +72,32 @@ def create_menu_bar(main_window):
     helpmenu.add_command(label='Help Index', command='')
     helpmenu.add_command(label='About...', command='')
     menu_bar.add_cascade(label='Help', menu=helpmenu)
+
+    db_conn = sqlite3.connect('History.db')
+    c = db_conn.cursor()
+    column_name_mod = ['ID', 'Carrier_Amp', 'Carrier_Freq', 'Modulating_Amp', 'Modulating_Fre',
+                       'sensitivity', 'Mod_type']
+    command = 'CREATE TABLE IF NOT EXISTS modulation (ID INTEGER PRIMARY KEY AUTOINCREMENT,Carrier_Amp int, Carrier_Fre int,Modulating_Amp int, Modulating_Fre int,sensitivity float real,Mod_type VARCHAR);'
+    db_conn.execute(command)
+    db_conn.commit()
+
+    column_name_diode = ['ID', 'electron_density_n', 'hole_density_n', 'electron_density_p', 'hole_density_p']
+    command = 'CREATE TABLE IF NOT EXISTS diode (ID INTEGER PRIMARY KEY AUTOINCREMENT,electron_density_n float real, hole_density_n float real,electron_density_p float real, hole_density_p float real);'
+    db_conn.execute(command)
+    db_conn.commit()
+    db_conn.close()
+
+
+    history_menu = Menu(menu_bar, tearoff=0)
+    history_menu.add_command(label='Modulation Input History',
+                             command=lambda: prac.show_history(column_name_mod, 'modulation'))
+    history_menu.add_command(label='Diode input History', command=lambda: prac.show_history(column_name_diode, 'diode'))
+    history_menu.add_command(label='Resistor input History', command='')
+    menu_bar.add_cascade(label='History', menu=history_menu)
+
+
     main_window.config(menu=menu_bar)
+
 
 def create_menu_bar1(main_window,canvas):
     def _quit():
@@ -117,4 +144,31 @@ def create_menu_bar1(main_window,canvas):
     helpmenu.add_command(label='Help Index', command='')
     helpmenu.add_command(label='About...', command='')
     menu_bar.add_cascade(label='Help', menu=helpmenu)
+
+
+    db_conn = sqlite3.connect('History.db')
+    c = db_conn.cursor()
+    column_name_mod = ['ID', 'Carrier_Ampl', 'Carrier_Freq', 'Modulating_Amp', 'Modulating_Fre',
+                   'sensitivity','Mod_type']
+    command = 'CREATE TABLE IF NOT EXISTS modulation (ID INTEGER PRIMARY KEY AUTOINCREMENT,Carrier_Amp int, Carrier_Fre int,Modulating_Amp int, Modulating_Fre int,sensitivity float real,Mod_type VARCHAR);'
+    db_conn.execute(command)
+    db_conn.commit()
+
+    column_name_diode = ['ID', 'electron_density_n', 'hole_density_n', 'electron_density_p', 'hole_density_p']
+    command = 'CREATE TABLE IF NOT EXISTS diode (ID INTEGER PRIMARY KEY AUTOINCREMENT,electron_density_n float real, hole_density_n float real,electron_density_p float real, hole_density_p float real);'
+    db_conn.execute(command)
+    db_conn.commit()
+    db_conn.close()
+
+
+    history_menu = Menu(menu_bar, tearoff=0)
+    history_menu.add_command(label='Modulation Input History', command=lambda: prac.show_history(column_name_mod,'modulation'))
+    history_menu.add_command(label='Diode input History', command=lambda: prac.show_history(column_name_diode,'diode'))
+    history_menu.add_command(label='Resistor input History', command='')
+    menu_bar.add_cascade(label='History', menu=history_menu)
+
     main_window.config(menu=menu_bar)
+
+
+
+

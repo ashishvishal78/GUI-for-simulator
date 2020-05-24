@@ -1,24 +1,56 @@
 import tkinter as tk
-from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox as msg
 from tkinter import Menu
 import numpy as np
 import math
 import matplotlib.pyplot as plt
+import mpl_toolkits
+from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-import create_menu
 from tkinter import filedialog as fd
+import create_menu
+from tkinter import *
+import sqlite3
 
-from PIL import Image,ImageTk
+def save_mod(val1=0,val2=0,val3=0,val4=0,val5=0,val6='AM'):
+    db_conn = sqlite3.connect('History.db')
+    c = db_conn.cursor()
+    print("connection established")
+    front_='INSERT INTO modulation (Carrier_Amp,Carrier_Fre,Modulating_Amp,Modulating_Fre,sensitivity,Mod_type) '
+    back='VALUES ('+str(val1)+','+str(val2)+','+str(val3)+','+str(val4)+','+str(val5)+','
+    if(val6=='AM'):
+        back+='"AM"'
+    if (val6 == 'FM'):
+        back += '"FM"'
+    if(val6=='PM'):
+        back+='"PM"'
+    back+=');'
 
+    front_+=back
+    #print(front_)
+    db_conn.execute(front_)
+    db_conn.commit()
+    db_conn.close()
+
+def save_diode(val1=0,val2=0,val3=0,val4=0):
+    db_conn = sqlite3.connect('History.db')
+    c = db_conn.cursor()
+    command='INSERT INTO diode(electron_density_n,hole_density_n,electron_density_p,hole_density_p) VALUES('
+    command=command+str(val1)+','+str(val2)+','+str(val3)+','+str(val4)+');'
+    db_conn.execute(command)
+    db_conn.commit()
+    db_conn.close()
+
+#from PIL import Image,ImageTk
 def icon_background(wind,photo):
-    wind.iconphoto(False, photo)
+    #wind.iconphoto(False, photo)
     wind.configure(background='AntiqueWhite1')
 
 def Plot_Amplitude_Modulation():
     def plot_AM():
+        save_mod(Amp_c.get(), fre_c.get(), Amp_m.get(), fre_m.get(), Amp_sen.get(), 'AM')
         try:
             check_ = 0
             if (mod_sig.get()):
@@ -77,6 +109,7 @@ def Plot_Amplitude_Modulation():
             canvas = FigureCanvasTkAgg(fig, master=modulation_window)
             canvas._tkcanvas.grid(row=7, column=0, columnspan=3, sticky=tk.EW)
             #Amp_sig=Amp_c.get()*(1+(Amp_sen.get()*Amp_m.get())*(cos()))
+            modulation_window.update()
         except:
           msg.showerror('Input Entry Error','Please Enter Valid Number')
 
@@ -128,6 +161,7 @@ def Plot_Amplitude_Modulation():
 
 def Plot_Frequency_Modulation():
     def plot_FM():
+        save_mod(Amp_c.get(), fre_c.get(), Amp_m.get(), fre_m.get(), fre_sen.get(), 'FM')
         try:
             check_ = 0
             inc_=1
@@ -188,9 +222,10 @@ def Plot_Frequency_Modulation():
 
             canvas = FigureCanvasTkAgg(fig, master=modulation_window)
             canvas._tkcanvas.grid(row=7, column=0, columnspan=3, sticky=tk.EW)
-            modulation_window.update()
+            #modulation_window.update()
         except:
             msg.showerror('Input Entry Error','Please Enter Valid Number')
+
     modulation_window = tk.Tk(className='Frequency Modulation')
 
     fig = Figure(figsize=(15, 6), facecolor='pink', edgecolor='green', linewidth=1)
@@ -239,6 +274,7 @@ def Plot_Frequency_Modulation():
 
 def Plot_Phase_Modulation():
     def plot_PM():
+        save_mod(Amp_c.get(), fre_c.get(), Amp_m.get(), fre_m.get(), phase_sen.get(), 'PM')
         try:
             check_ = 0
             inc_=1
@@ -303,6 +339,7 @@ def Plot_Phase_Modulation():
 
             canvas = FigureCanvasTkAgg(fig, master=modulation_window)
             canvas._tkcanvas.grid(row=7, column=0, columnspan=3, sticky=tk.EW)
+            modulation_window.update()
         except:
             msg.showerror('Input Entry Error','Please Enter Valid Number')
     modulation_window = tk.Tk(className='Phase Modulation')
