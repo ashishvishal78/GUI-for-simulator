@@ -3,14 +3,12 @@ from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox as msg
 from tkinter import Menu
-import numpy as np
-import math
-import matplotlib.pyplot as plt
+from matplotlib import pyplot as plt
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import create_menu
 import Modulation_package as mod
-from PIL import Image, ImageTk
+import diode
 
 main_window=tk.Tk(className='Device Simulator')
 main_window.resizable(False,False)
@@ -19,11 +17,6 @@ create_menu.create_menu_bar(main_window)
 def plot_resistor():
     sc_x=1
     sc_y=1
-    '''def sel():
-        sc_x=str(scale_factor_x.get())
-        sc_y=scale_factor_y.get()
-        print(sc_x,sc_y)'''
-
     def click_me():
         volt = []
         current = []
@@ -79,13 +72,11 @@ def plot_frequency_modulation():
     mod.Plot_Frequency_Modulation()
 def Plot_Phase_Modulation():
     mod.Plot_Phase_Modulation()
+def diode_plot():
+    diode.plot_diode()
 
 
-image = Image.open("C:/Users/DELL/Pictures/iitbhu_log.png")
-photo = ImageTk.PhotoImage(image)
-create_menu.icon_background(main_window,photo)
 
-#buttom=tk.Button(main_window,image=photo).grid(row=0,column=0)
 
 plot_detail=tk.LabelFrame(main_window,text='Modulation',font='Didot',width=450,highlightcolor='pink',highlightbackground='pink',bd=10,bg='Aqua')
 plot_detail.grid(row=0,column=0,padx=20,pady=10)
@@ -99,7 +90,7 @@ plot_device=tk.LabelFrame(main_window,text='Solid State Device',font='Didot',wid
 plot_device.grid(row=0,column=1,padx=20,pady=10)
 Label(plot_device,text='Choose Any One to Plot characetristics',bg='Aqua',fg='RED',font='Didot').grid(row=0,column=0,padx=10,pady=10)
 button1=tk.Button(plot_device,bg='LightSlateGray',command=plot_resistor,font='Courier',activebackground='blue',activeforeground='red',text='Resistor',width=20,height=2).grid(row=1,column=0,padx=5,pady=5)
-button2=tk.Button(plot_device,bg='LightSlateGray',command=plot_resistor,font='Courier',activebackground='blue',activeforeground='red',text='Diode',width=20,height=2).grid(row=2,column=0,padx=5,pady=5)
+button2=tk.Button(plot_device,bg='LightSlateGray',command=diode_plot,font='Courier',activebackground='blue',activeforeground='red',text='Diode',width=20,height=2).grid(row=2,column=0,padx=5,pady=5)
 button3=tk.Button(plot_device,bg='LightSlateGray',command=plot_resistor,font='Courier',activebackground='blue',activeforeground='red',text='Transistor',width=20,height=2).grid(row=3,column=0,padx=5,pady=5)
 
 main_window.mainloop()
