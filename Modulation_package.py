@@ -14,10 +14,28 @@ import create_menu
 from tkinter import *
 import sqlite3
 
+class FullScreenApp(object):
+    def __init__(self, master, **kwargs):
+        self.master=master
+        padx=145
+        pady=720
+        self._geom='200x200+0+0'
+        #master.geometry("{0}x{1}+0+0".format(master.winfo_screenwidth()-pad, master.winfo_screenheight()-pad))
+        master.geometry("{0}x{1}+360+40".format(master.winfo_screenwidth() - pady, master.winfo_screenheight() - padx))
+        master.bind('<Escape>',self.toggle_geom)
+    def toggle_geom(self,event):
+        geom=self.master.winfo_geometry()
+        #print(geom,self._geom)
+        self.master.geometry(self._geom)
+        self._geom=geom
+
+
+
+
 def save_mod(val1=0,val2=0,val3=0,val4=0,val5=0,val6='AM'):
     db_conn = sqlite3.connect('History.db')
     c = db_conn.cursor()
-    print("connection established")
+    #print("connection established")
     front_='INSERT INTO modulation (Carrier_Amp,Carrier_Fre,Modulating_Amp,Modulating_Fre,sensitivity,Mod_type) '
     back='VALUES ('+str(val1)+','+str(val2)+','+str(val3)+','+str(val4)+','+str(val5)+','
     if(val6=='AM'):
@@ -34,14 +52,7 @@ def save_mod(val1=0,val2=0,val3=0,val4=0,val5=0,val6='AM'):
     db_conn.commit()
     db_conn.close()
 
-def save_diode(val1=0,val2=0,val3=0,val4=0):
-    db_conn = sqlite3.connect('History.db')
-    c = db_conn.cursor()
-    command='INSERT INTO diode(electron_density_n,hole_density_n,electron_density_p,hole_density_p) VALUES('
-    command=command+str(val1)+','+str(val2)+','+str(val3)+','+str(val4)+');'
-    db_conn.execute(command)
-    db_conn.commit()
-    db_conn.close()
+
 
 #from PIL import Image,ImageTk
 def icon_background(wind,photo):
@@ -109,6 +120,7 @@ def Plot_Amplitude_Modulation():
             canvas = FigureCanvasTkAgg(fig, master=modulation_window)
             canvas._tkcanvas.grid(row=7, column=0, columnspan=3, sticky=tk.EW)
             #Amp_sig=Amp_c.get()*(1+(Amp_sen.get()*Amp_m.get())*(cos()))
+
             modulation_window.update()
         except:
           msg.showerror('Input Entry Error','Please Enter Valid Number')
@@ -118,7 +130,7 @@ def Plot_Amplitude_Modulation():
     modulation_window.configure(background='AntiqueWhite1')
 
 
-    fig = Figure(figsize=(15, 6), facecolor='pink', edgecolor='green', linewidth=1)
+    fig = Figure(figsize=(13, 4), facecolor='pink', edgecolor='green', linewidth=1)
     canvas = FigureCanvasTkAgg(fig, master=modulation_window)
     create_menu.create_menu_bar1(modulation_window, canvas)
 
@@ -140,6 +152,7 @@ def Plot_Amplitude_Modulation():
     ttk.Label(modulation_window, text='Amplitude Sensitivity :').grid(row=4, column=0, sticky=tk.E)
     Entry(modulation_window, textvariable=Amp_sen).grid(row=4, column=1,sticky=tk.W)
     scale_factor=tk.DoubleVar(modulation_window)
+    scale_factor.set(10)
     ttk.Label(modulation_window,text='scale_factor :').grid(row=5,column=0,sticky=tk.E)
     scaleing=Scale(modulation_window,from_=0,to=100,variable=scale_factor,orient=HORIZONTAL).grid(row=5,column=1,sticky=tk.EW)
     # check box making
@@ -156,7 +169,6 @@ def Plot_Amplitude_Modulation():
     check3 = tk.Checkbutton(modulation_window, text='Message Signal', variable=mes_sig)
     check3.select()
     check3.grid(row=3, column=2, sticky=tk.W)
-
     action=ttk.Button(modulation_window,command=plot_AM,text='Plot Graph').grid(row=6,column=0,sticky=tk.E)
 
 def Plot_Frequency_Modulation():
@@ -228,7 +240,7 @@ def Plot_Frequency_Modulation():
 
     modulation_window = tk.Tk(className='Frequency Modulation')
 
-    fig = Figure(figsize=(15, 6), facecolor='pink', edgecolor='green', linewidth=1)
+    fig = Figure(figsize=(13, 4), facecolor='pink', edgecolor='green', linewidth=1)
     canvas = FigureCanvasTkAgg(fig, master=modulation_window)
     create_menu.create_menu_bar1(modulation_window, canvas)
 
@@ -251,6 +263,7 @@ def Plot_Frequency_Modulation():
     ttk.Label(modulation_window, text='frequency Sensitivity :').grid(row=4, column=0,sticky=tk.E)
     Entry(modulation_window, textvariable=fre_sen).grid(row=4, column=1,sticky=tk.W)
     scale_factor = tk.DoubleVar(modulation_window)
+    scale_factor.set(10)
     ttk.Label(modulation_window, text='scaling factor : ').grid(row=5, column=0, sticky=tk.E)
     scale_y = Scale(modulation_window, variable=scale_factor, from_=0, to=100, orient=HORIZONTAL).grid(row=5,
                                                                                                      column=1,
@@ -344,7 +357,7 @@ def Plot_Phase_Modulation():
             msg.showerror('Input Entry Error','Please Enter Valid Number')
     modulation_window = tk.Tk(className='Phase Modulation')
 
-    fig = Figure(figsize=(15, 6), facecolor='pink', edgecolor='green', linewidth=1)
+    fig = Figure(figsize=(13, 4), facecolor='pink', edgecolor='green', linewidth=1)
     canvas = FigureCanvasTkAgg(fig, master=modulation_window)
     create_menu.create_menu_bar1(modulation_window, canvas)
 
@@ -369,6 +382,7 @@ def Plot_Phase_Modulation():
     ttk.Label(modulation_window, text='Phase Sensitivity :').grid(row=4, column=0,sticky=tk.E)
     Entry(modulation_window, textvariable=phase_sen).grid(row=4, column=1,sticky=tk.W)
     scale_factor = tk.DoubleVar(modulation_window)
+    scale_factor.set(10)
     ttk.Label(modulation_window, text='scaling factor : ').grid(row=5, column=0, sticky=tk.E)
     scale_y = Scale(modulation_window, variable=scale_factor, from_=0, to=100, orient=HORIZONTAL).grid(row=5,
                                                                                                        column=1,

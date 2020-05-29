@@ -44,7 +44,7 @@ def create_menu_bar(main_window):
         if (ans):
             # main_window.quit()
             #main_window.destroy()
-            main_window.after(2000, main_window.destroy)
+            main_window.after(0, main_window.destroy)
     def _saveas():
         ans = msg.askyesno('show info', 'Do You Want to Save ?')
         if (ans):
