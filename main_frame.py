@@ -127,8 +127,9 @@ def plot_resistor():
     scale_factor_y = DoubleVar(resistor_window)
     scale_factor_x = DoubleVar(resistor_window)
     ttk.Label(resistor_window,text='scaling factor x: ').grid(row=1,column=0,sticky=tk.E)
-
+    scale_factor_x.set(100)
     scale_x = Scale(resistor_window, variable=scale_factor_x, from_=0, to=1000, orient=HORIZONTAL).grid(row=1,column=1,sticky=tk.EW, columnspan=3)
+
     #button = Button(resistor_window, text="Get Scale Value", command=sel).grid(row=2,column=1)
 
     resistor_window.mainloop()
