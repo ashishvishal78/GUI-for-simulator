@@ -162,6 +162,6 @@ button2=tk.Button(plot_device,bg='LightSlateGray',command=diode_plot,font='Couri
 button3=tk.Button(plot_device,bg='LightSlateGray',command=show_,font='Courier',activebackground='blue',activeforeground='red',text='Transistor',width=20,height=2).grid(row=3,column=0,padx=10,pady=10)
 
 
-main_window.geometry("{0}x{1}+0+0".format(646,304))
+#main_window.geometry("{0}x{1}+0+0".format(646,304))
 
 main_window.mainloop()
