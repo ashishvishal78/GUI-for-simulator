@@ -10,7 +10,7 @@ import sqlite3
 
 def icon_background(wind,photo):
 
-    #wind.iconphoto(True, photo)
+    wind.iconphoto(True, photo)
     wind.configure(background='AntiqueWhite1')
 
 def _create_check(modulation_window):
@@ -46,9 +46,9 @@ def create_menu_bar(main_window):
             #main_window.destroy()
             main_window.after(2000, main_window.destroy)
     def _saveas():
-        ans = msg.askyesno('Patnite Simulator', 'Do You Want to Save ?')
+        ans = msg.askyesno('show info', 'Do You Want to Save ?')
         if (ans):
-            msg.showerror('Patnite Simulater','There is Nothing to Save')
+            msg.showerror('Input error','There is Nothing to Save')
 
     menu_bar = Menu(main_window, bd=3, fg='red', bg='pink')
     filemenu = Menu(menu_bar, tearoff=0)
@@ -81,18 +81,29 @@ def create_menu_bar(main_window):
     db_conn.execute(command)
     db_conn.commit()
 
-    column_name_diode = ['ID', 'electron_density_n', 'hole_density_n', 'electron_density_p', 'hole_density_p']
-    command = 'CREATE TABLE IF NOT EXISTS diode (ID INTEGER PRIMARY KEY AUTOINCREMENT,electron_density_n float real, hole_density_n float real,electron_density_p float real, hole_density_p float real);'
+    column_name_diode = ['ID', 'Donor_concn', 'Acceptor_concn', 'Area', 'Intrinsic_concn', 'Holes_life',
+                         'Electron_life', 'Holes_diff', 'Electron_diff', 'Temp']
+    command = 'CREATE TABLE IF NOT EXISTS DIODE1 (ID INTEGER PRIMARY KEY AUTOINCREMENT,Donor_concn float real, Acceptor_concn float real, Area float real,Intrinsic_concn float real, Holes_life float real,Electron_life float real, Holes_diff float real,Electron_diff float real, Temp float real);'
+
+
     db_conn.execute(command)
     db_conn.commit()
+
+    column_name_resistance = ['ID', 'Resist']
+    command = 'CREATE TABLE IF NOT EXISTS Resistance (ID INTEGER PRIMARY KEY AUTOINCREMENT,Resist float real);'
+
+    db_conn.execute(command)
+    db_conn.commit()
+
+
     db_conn.close()
 
 
     history_menu = Menu(menu_bar, tearoff=0)
     history_menu.add_command(label='Modulation Input History',
                              command=lambda: prac.show_history(column_name_mod, 'modulation'))
-    history_menu.add_command(label='Diode input History', command=lambda: prac.show_history(column_name_diode, 'diode'))
-    history_menu.add_command(label='Resistor input History', command='')
+    history_menu.add_command(label='Diode input History', command=lambda: prac.show_history(column_name_diode, 'diode1'))
+    history_menu.add_command(label='Resistor input History', command=lambda : prac.show_history(column_name_resistance,'Resistance'))
     menu_bar.add_cascade(label='History', menu=history_menu)
 
 
@@ -105,9 +116,9 @@ def create_menu_bar1(main_window,canvas):
         if (ans):
             # main_window.quit()
             #main_window.destroy()
-            main_window.after(2000, main_window.destroy)
+            main_window.after(0, main_window.destroy)
     def _saveas():
-        ans = msg.askyesno('Patnite Simulator', 'Do You Want to Save ?')
+        ans = msg.askyesno('Show Information', 'Do You Want to Save ?')
         if (ans):
             files = [('All Files', '*.*'),
                      ('Python Files', '*.py'),
@@ -115,12 +126,12 @@ def create_menu_bar1(main_window,canvas):
             file = fd.asksaveasfilename(defaultextension='.png')
             if file:
                 try:
-                    print(main_window.winfo_children())
+                    #print(main_window.winfo_children())
                     canvas.print_png(file)
                 except:
                     print("nope")
             else:
-                msg.showerror('Patnite Simulater','Please Write Valid Name')
+                msg.showerror('Input Error','Please Write Valid Name')
 
     menu_bar = Menu(main_window, bd=3, fg='red', bg='pink')
     filemenu = Menu(menu_bar, tearoff=0)
@@ -154,17 +165,21 @@ def create_menu_bar1(main_window,canvas):
     db_conn.execute(command)
     db_conn.commit()
 
-    column_name_diode = ['ID', 'electron_density_n', 'hole_density_n', 'electron_density_p', 'hole_density_p']
-    command = 'CREATE TABLE IF NOT EXISTS diode (ID INTEGER PRIMARY KEY AUTOINCREMENT,electron_density_n float real, hole_density_n float real,electron_density_p float real, hole_density_p float real);'
+    column_name_diode = ['ID','Donor_concn', 'Acceptor_concn', 'Area', 'Intrinsic_concn', 'Holes_life','Electron_life','Holes_diff','Electron_diff','Temp']
+    command = 'CREATE TABLE IF NOT EXISTS DIODE1 (ID INTEGER PRIMARY KEY AUTOINCREMENT,Donor_concn float real, Acceptor_concn float real, Area float real,Intrinsic_concn float real, Holes_life float real,Electron_life float real, Holes_diff float real,Electron_diff float real, Temp float real);'
     db_conn.execute(command)
     db_conn.commit()
+
+    column_name_resistance = ['ID', 'Resist']
+    command = 'CREATE TABLE IF NOT EXISTS Resistance (ID INTEGER PRIMARY KEY AUTOINCREMENT,Resist float real);'
+
     db_conn.close()
 
 
     history_menu = Menu(menu_bar, tearoff=0)
     history_menu.add_command(label='Modulation Input History', command=lambda: prac.show_history(column_name_mod,'modulation'))
-    history_menu.add_command(label='Diode input History', command=lambda: prac.show_history(column_name_diode,'diode'))
-    history_menu.add_command(label='Resistor input History', command='')
+    history_menu.add_command(label='Diode input History', command=lambda: prac.show_history(column_name_diode,'DIODE1'))
+    history_menu.add_command(label='Resistor input History', command=lambda : prac.show_history(column_name_resistance,'Resistance'))
     menu_bar.add_cascade(label='History', menu=history_menu)
 
     main_window.config(menu=menu_bar)
