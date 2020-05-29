@@ -26,7 +26,7 @@ class FullScreenApp(object):
         master.bind('<Escape>',self.toggle_geom)
     def toggle_geom(self,event):
         geom=self.master.winfo_geometry()
-        #print(geom,self._geom)
+        print(geom,self._geom)
         self.master.geometry(self._geom)
         self._geom=geom
 
@@ -67,7 +67,6 @@ root.mainloop()
 
 
 
-
 main_window=tk.Tk(className='Device Simulator')
 main_window.configure(background='AntiqueWhite1')
 
@@ -77,10 +76,10 @@ create_menu.create_menu_bar(main_window)
 def save_resistance(val1=0):
     db_conn = sqlite3.connect('History.db')
     c = db_conn.cursor()
-    #print("connection established")
+    print("connection established")
     front_='INSERT INTO Resistance (Resist) '
     front_+='VALUES ('+str(val1)+');'
-    #print(front_)
+    print(front_)
     db_conn.execute(front_)
     db_conn.commit()
     db_conn.close()
@@ -102,7 +101,7 @@ def plot_resistor():
                 volt.append(i)
                 current.append(hel)
 
-            #print(volt,current)
+            print(volt,current)
             fig = Figure(figsize=(5,4), facecolor='pink', edgecolor='green', linewidth=5)
             axis = fig.add_subplot(1, 1, 1)
             axis.plot(volt, current)
@@ -128,7 +127,7 @@ def plot_resistor():
     scale_factor_y = DoubleVar(resistor_window)
     scale_factor_x = DoubleVar(resistor_window)
     ttk.Label(resistor_window,text='scaling factor x: ').grid(row=1,column=0,sticky=tk.E)
-    scale_factor_x.set(100)
+
     scale_x = Scale(resistor_window, variable=scale_factor_x, from_=0, to=1000, orient=HORIZONTAL).grid(row=1,column=1,sticky=tk.EW, columnspan=3)
     #button = Button(resistor_window, text="Get Scale Value", command=sel).grid(row=2,column=1)
 
@@ -151,20 +150,18 @@ plot_detail=tk.LabelFrame(main_window,text='Modulation',font='Didot',width=450,h
 plot_detail.grid(row=0,column=0,padx=20,pady=10)
 Label(plot_detail,text='Choose Any One to Plot Graph',bg='Aqua',fg='RED',font='Didot').grid(row=0,column=0,pady=10,padx=10)
 #button1=tk.Button(plot_detail,bg='LightSlateGray',command=plot_resistor,font='Courier',activebackground='blue',activeforeground='red',text='resistor',width=20,height=2).grid(row=1,column=0,padx=5,pady=5)
-button1=tk.Button(plot_detail,bg='LightSlateGray',command=plot_modulation,font='courier',activebackground='blue',activeforeground='red',text='Amplitude Modulation',width=20,height=2).grid(row=1,column=0,padx=5,pady=5)
-button2=tk.Button(plot_detail,bg='LightSlateGray',command=plot_frequency_modulation,font='courier',activebackground='blue',activeforeground='red',text='Frequency Modulation',width=20,height=2).grid(row=2,column=0,padx=5,pady=5)
-button3=tk.Button(plot_detail,bg='LightSlateGray',command=Plot_Phase_Modulation,font='courier',activebackground='blue',activeforeground='red',text='Phase Modulation',width=20,height=2).grid(row=3,column=0,padx=5,pady=5)
+button1=tk.Button(plot_detail,bg='LightSlateGray',command=plot_modulation,font='courier',activebackground='blue',activeforeground='red',text='Amplitude Modulation',width=20,height=2).grid(row=1,column=0,padx=10,pady=10)
+button2=tk.Button(plot_detail,bg='LightSlateGray',command=plot_frequency_modulation,font='courier',activebackground='blue',activeforeground='red',text='Frequency Modulation',width=20,height=2).grid(row=2,column=0,padx=10,pady=10)
+button3=tk.Button(plot_detail,bg='LightSlateGray',command=Plot_Phase_Modulation,font='courier',activebackground='blue',activeforeground='red',text='Phase Modulation',width=20,height=2).grid(row=3,column=0,padx=10,pady=10)
 
 plot_device=tk.LabelFrame(main_window,text='Solid State Device',font='Didot',width=350,highlightcolor='pink',highlightbackground='pink',bd=10,bg='Aqua')
 plot_device.grid(row=0,column=1,padx=20,pady=10)
 Label(plot_device,text='Choose Any One to Plot characetristics',bg='Aqua',fg='RED',font='Didot').grid(row=0,column=0,padx=10,pady=10)
-button1=tk.Button(plot_device,bg='LightSlateGray',command=plot_resistor,font='Courier',activebackground='blue',activeforeground='red',text='Resistor',width=20,height=2).grid(row=1,column=0,padx=5,pady=5)
-button2=tk.Button(plot_device,bg='LightSlateGray',command=diode_plot,font='Courier',activebackground='blue',activeforeground='red',text='Diode',width=20,height=2).grid(row=2,column=0,padx=5,pady=5)
-button3=tk.Button(plot_device,bg='LightSlateGray',command=show_,font='Courier',activebackground='blue',activeforeground='red',text='Transistor',width=20,height=2).grid(row=3,column=0,padx=5,pady=5)
+button1=tk.Button(plot_device,bg='LightSlateGray',command=plot_resistor,font='Courier',activebackground='blue',activeforeground='red',text='Resistor',width=20,height=2).grid(row=1,column=0,padx=10,pady=10)
+button2=tk.Button(plot_device,bg='LightSlateGray',command=diode_plot,font='Courier',activebackground='blue',activeforeground='red',text='Diode',width=20,height=2).grid(row=2,column=0,padx=10,pady=10)
+button3=tk.Button(plot_device,bg='LightSlateGray',command=show_,font='Courier',activebackground='blue',activeforeground='red',text='Transistor',width=20,height=2).grid(row=3,column=0,padx=10,pady=10)
 
 
-padx = 145
-pady = 720
-main_window.geometry("{0}x{1}+0+0".format(776,314))
+main_window.geometry("{0}x{1}+0+0".format(646,304))
 
 main_window.mainloop()
