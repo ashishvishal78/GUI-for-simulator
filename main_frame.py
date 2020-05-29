@@ -165,7 +165,5 @@ button3=tk.Button(plot_device,bg='LightSlateGray',command=show_,font='Courier',a
 
 padx = 145
 pady = 720
-main_window.geometry(
-"{0}x{1}+0+0".format(main_window.winfo_screenwidth()-760, main_window.winfo_screenheight()-550))
 
 main_window.mainloop()
